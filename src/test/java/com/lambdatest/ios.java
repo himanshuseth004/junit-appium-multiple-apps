@@ -21,10 +21,7 @@ public class ios {
             : System.getenv("LT_ACCESS_KEY");
     public static RemoteWebDriver driver = null;
     public String gridURL = "@mobile-hub.lambdatest.com/wd/hub";
-
-    //MARKING TEST AS PASSED
     public String status = "passed";
-    
     @Before
     public void setUp() throws Exception {
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -40,6 +37,11 @@ public class ios {
         capabilities.setCapability("console",true);
         capabilities.setCapability("network",true);
         capabilities.setCapability("visual",true);
+
+        // ADD THE APP URL OF OTHER APPS THAT YOU'D LIKE TO INSTALL ON THE SAME DEVICE
+        capabilities.setCapability("otherApps", "[\"APP_ID\", \"APP_ID\"]");   // ENTER THE OTHER APP URLs HERE IN AN ARRAY FORMAT
+
+
         try
         {
             driver = new RemoteWebDriver(new URL("https://" + username + ":" + accessKey + gridURL), capabilities);
@@ -69,24 +71,11 @@ public class ios {
 
             wait.until(ExpectedConditions.elementToBeClickable(MobileBy.id("notification"))).click();
 
-            wait.until(ExpectedConditions.elementToBeClickable(MobileBy.id("toast"))).click();
-
-            wait.until(ExpectedConditions.elementToBeClickable(By.id("Browser"))).click();
-            Thread.sleep(10000);
-
-            wait.until(ExpectedConditions.elementToBeClickable(MobileBy.id("url"))).sendKeys("https://www.lambdatest.com/");;
-
-            wait.until(ExpectedConditions.elementToBeClickable(MobileBy.id("find"))).click();
-            Thread.sleep(5000);
-            driver.navigate().back();
-
-            //MARKING TEST AS PASSED
             status="passed"; 
         }
             catch (Exception e)
              {
                 System.out.println(e.getMessage());
-                //MARKING TEST AS FAILED
                 status="failed";
              }
     }
@@ -100,4 +89,3 @@ public class ios {
         }
     }
 }
-
